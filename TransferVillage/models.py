@@ -45,7 +45,10 @@ class User(db.Model, UserMixin):
 
 class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(125), unique=True)
+    original_filename = db.Column(db.String(125))
+    filename = db.Column(db.String(125), unique=True)
+    bucket = db.Column(db.String(125))
+    region = db.Column(db.String(125))
     password = db.Column(db.String(1000), nullable=False)
     expires_at = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
