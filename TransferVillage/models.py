@@ -47,8 +47,14 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     original_filename = db.Column(db.String(125))
     filename = db.Column(db.String(125), unique=True)
-    bucket = db.Column(db.String(125))
-    region = db.Column(db.String(125))
-    password = db.Column(db.String(1000), nullable=False)
+    is_private = db.Column(db.Boolean, default=False)
+    password = db.Column(db.String(1000))
+    is_expiry = db.Column(db.Boolean, default=False)
     expires_at = db.Column(db.DateTime)
+    uploaded_at = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(140), unique=True, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now(tz))

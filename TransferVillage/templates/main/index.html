@@ -1,0 +1,262 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- main-area -->
+<main class="main--area">
+
+    <!-- slider-area -->
+    <section class="slider__area slider__bg"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}">
+        <div class="slider-activee">
+            <div class="single-slider">
+                <div class="container custom-container">
+                    <div class="row justify-content-between">
+                        <div class="col-lg-6">
+                            <div class="slider__content">
+                                <h6 class="sub-title wow fadeInUp" data-wow-delay=".2s">Transfer Village</h6>
+                                <p class="wow fadeInUp" data-wow-delay=".8s">Share files
+                                    easily. Password protected
+                                    files. Delete files automatically once downloaded.</p>
+                                <div class="slider__btn wow fadeInUp" data-wow-delay="1.2s">
+                                    <a href="{{ url_for('main.register') }}" class="tg-btn-1"><span>Register</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-6 col-xl-5 col-lg-6">
+                            <div class="slider__img text-center">
+                                <img src="{{ url_for('static', filename='assets/img/slider/slider_img01.png') }}"
+                                    data-magnetic alt="img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slider__shapes">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-microsoft-word-100.png') }}" alt="shape">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-microsoft-excel-50.png') }}" alt="shape">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-audio-skimming-50.png') }}" alt="shape">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-microsoft-powerpoint-50.png') }}"
+                alt="shape">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-jpg-100.png') }}" alt="shape">
+            <img src="{{ url_for('static', filename='assets/img/slider/icons8-pdf-100.png') }}" alt="shape">
+        </div>
+
+    </section>
+    <!-- slider-area-end -->
+
+    <!-- NFT-item-area -->
+    <!-- <section class="nft-item__area">
+        <div class="container custom-container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9">
+                    <div class="nft-item__box">
+                        <div class="nft-item__thumb">
+                            <a href="#"><img
+                                    src="{{ url_for('static', filename='assets/img/conimg/Convert-PPT-to-PDF.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="nft-item__content">
+                            <h4 class="title"><a href="#">DOC To PDF</a></h4>
+
+                            <div class="nft-item__bid">
+                                <div class="nft-item__price">
+                                    <a href="#" class="bid-btn">Convert <i class="fas fa-long-arrow-alt-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9">
+                    <div class="nft-item__box">
+                        <div class="nft-item__thumb">
+                            <a href="#"><img
+                                    src="{{ url_for('static', filename='assets/img/conimg/convert-jpg-to-pdf.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="nft-item__content">
+                            <h4 class="title"><a href="#">JPG To PDF</a></h4>
+                            <div class="nft-item__bid">
+                                <div class="nft-item__price">
+
+                                    <a href="#" class="bid-btn">Convert <i class="fas fa-long-arrow-alt-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9">
+                    <div class="nft-item__box">
+                        <div class="nft-item__thumb">
+                            <a href="#"><img
+                                    src="{{ url_for('static', filename='assets/img/conimg/pdf-to-excel-400x240.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="nft-item__content">
+                            <h4 class="title"><a href="#">PDF To EXCEL</a></h4>
+
+                            <div class="nft-item__bid">
+                                <div class="nft-item__price">
+
+                                    <a href="#" class="bid-btn">Convert <i class="fas fa-long-arrow-alt-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- NFT-item-area-end -->
+
+    <!-- area-background-start -->
+    <div class="area-background" data-background="{{ url_for('static', filename='assets/img/bg/area_bg01.jpg') }}">
+        <br>
+        <br>
+        <!-- about-area -->
+        <div class="container px-4 py-5" id="featured-3">
+            <h2 class="pb-2 border-bottom text-center">MORE THEN JUST SHARING AND STORAGE</h2>
+            <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+                <div class="feature col">
+                    <div class="feature-icon ">
+                        <img src="{{ url_for('static', filename='assets/img/others/download.png') }}" alt="img"
+                            style="margin:0px 6rem 0px 6rem;">
+                    </div>
+                    <h3 class="mt-3">Anonymous file exchange</h3>
+                    <p>Paragraph of text beneath the heading to explain the heading. We' ll add onto it with
+                        another sentence and probably just keep going until we run out of words.</p>
+
+                </div>
+                <div class="feature col">
+                    <div class="feature-icon ">
+                        <img src="{{ url_for('static', filename='assets/img/others/download1.png') }}" alt="img"
+                            style="margin:0px 6rem 0px 6rem ;">
+                    </div>
+                    <h3 class="mt-3">NO SIZE LIMIT</h2>
+                        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with
+                            another sentence and probably just keep going until we run out of words.</p>
+
+                </div>
+                <div class="feature col">
+                    <div class="feature-icon ">
+                        <img src="{{ url_for('static', filename='assets/img/others/download 2.png') }}" alt="img"
+                            style="margin:0px 6rem 0px 6rem ;">
+                    </div>
+                    <h3 class="mt-3">Encrypted File Trasnfer</h1>
+                        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with
+                            another sentence and probably just keep going until we run out of words.</p>
+
+                </div>
+            </div>
+        </div>
+        <!-- about-area-end -->
+
+
+
+    </div>
+    <!-- area-background-end -->
+
+    <!-- team-area -->
+    <section class="team__area team-bg section-pt-130 section-pb-100"
+        data-background="{{ url_for('static', filename='assets/img/bg/team_bg.jpg') }}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-7 col-md-10">
+                    <div class="section__title text-center mb-60">
+                        <span class="sub-title tg__animate-text">Handles all of your file needs</span>
+                        <p class="title">File storage made easy – including powerful features you won’t find
+                            anywhere else. Whether you’re sharing photos, videos, audio, or docs, MediaFire can
+                            simplify your workflow.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".2s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team05.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">share</a></h4>
+                            <span class="designation">Share through email, link, or social network. Unlimited
+                                downloads. No wait times.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".4s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team06.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Collaborate</a></h4>
+                            <span class="designation">Store and share any file type. Share folders of project files.
+                                Easily email large files.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".6s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team07.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Store</a></h4>
+                            <span class="designation">10GB for free. Up to 50GB free with bonuses. Store all your
+                                photos, audio, and videos.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".8s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team08.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Access</a></h4>
+                            <span class="designation">Always have your important files with you. Never forget your
+                                work at home.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- team-area-end -->
+
+</main>
+<!-- main-area-end -->
+{% endblock %}

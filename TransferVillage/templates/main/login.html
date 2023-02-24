@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% block content %}
+<!-- main-area -->
+<main class="main--area">
+
+    <!-- breadcrumb-area -->
+    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <section class="container">
+                        <br>
+                        <br>
+                        <div class="col-md-10 mx-auto col-lg-5 mb-3 mt-60">
+                            <div class="contact__form-wrap">
+                                <form class="p-4 p-md-5 bg-dark" action="{{ url_for('main.login') }}" method="post">
+                                    <div class="col-lg-12">
+                                        <div class="input-grp">
+                                            <input name="email" type="email" placeholder="Email" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-grp">
+                                            <input name="password" type="password" placeholder="Password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <!-- Checkbox -->
+                                        <div class="form-check mb-0">
+                                            <input class="form-check-input me-2" type="checkbox" name="remember_me"
+                                                id="form2Example3" />
+                                            <label class="form-check-label" for="form2Example3">
+                                                Remember me
+                                            </label>
+                                        </div>
+                                        <a href="{{ url_for('main.reset_request') }}" class="link-danger">Forgot
+                                            password?</a>
+                                    </div>
+                                    <button class="w-100 btn btn-lg btn-warning justify-content-center"
+                                        type="submit">Sign In</button>
+                                    <hr class="my-4">
+                                    <div class="text-center">
+                                        <h6>Don't you have an account? <a
+                                                href="{{ url_for('main.register') }}">Register</a></h6>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb-area-end -->
+</main>
+<!-- main-area-end -->
+{% endblock %}
