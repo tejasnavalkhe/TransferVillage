@@ -3,11 +3,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 from TransferVillage.models import *
 from TransferVillage import db, bcrypt
 from TransferVillage.main.utils import *
-from datetime import datetime, date, timedelta, time
+from datetime import datetime, timedelta
 import pytz
-from hashlib import sha512
-import string
-import random
 from itsdangerous import URLSafeTimedSerializer as URLSerializer
 from itsdangerous import SignatureExpired, BadTimeSignature
 
@@ -17,7 +14,7 @@ tz = pytz.timezone("Asia/Calcutta")
 
 @main.route('/')
 def home():
-    return render_template('main/index.html')
+    return render_template('main/index.html', home="active")
 
 # ------ Register Route ------ #
 @main.route('/register/', methods=['GET', 'POST'])
@@ -29,17 +26,17 @@ def register():
             s = URLSerializer(current_app.config['SECRET_KEY'])
             token = s.dumps({"email": request.form.get('email').strip().lower(), "fname": request.form.get('fname').strip().title(), "lname": request.form.get('lname').strip().title(), "mobile_number": request.form.get('mobile_number'), "password": request.form.get('password')}, salt="send-email-confirmation")
             try:
+                print(token)
                 send_confirm_email(email=request.form.get('email').strip().lower(), token=token)
             except Exception as e:
                 print(e)
             flash(
                 f"An confirmation email has been sent to you on {request.form.get('email').strip().lower()}! Please, click on that link to activate your account. The link will expire in 10 minutes.", "success")
-            return redirect(url_for('users.login'))
+            return redirect(url_for('main.login'))
         else:
-            flash("You are already registered. Please login to share files.", "info")
+            flash("You are already registered. Please login to share files.", "success")
             return redirect(url_for('main.login'))
     return render_template('main/register.html')
-
 
 # ------ Confirm Registration ------ #
 @main.route('/confirm_email/<token>/')
@@ -60,7 +57,6 @@ def confirm_email(token):
         flash("That is an invalid or expired token", "danger")
         return redirect(url_for('main.register'))
 
-
 # ------ Login Route ------ #
 @main.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -70,7 +66,7 @@ def login():
         user = User.query.filter_by(email=request.form.get('email').strip().lower()).first()
         if user:
             if bcrypt.check_password_hash(user.password, request.form.get('password')):
-                login_user(user, remember=True if request.form.get('remember') == 'on' else False,
+                login_user(user, remember=True if request.form.get('remember_me') == 'on' else False,
                             duration=timedelta(weeks=1))
                 next_page = request.args.get('next')
                 flash("User logged in successfully!", "success")
@@ -80,10 +76,9 @@ def login():
                 return redirect(url_for('main.login'))
         else:
             flash(
-                "You don't have an account. Please create now to login.", "info")
+                "You don't have an account. Please create now to login.", "danger")
             return redirect(url_for('main.register'))
     return render_template('main/login.html', page='login')
-
 
 # ------ Logout Route ------ #
 @main.route('/logout/')
@@ -92,7 +87,6 @@ def logout():
     logout_user()
     flash("User has been logged out.", "success")
     return redirect(url_for('main.home'))
-
 
 # ------ Reset Password Request Route ------ #
 @main.route('/reset_password/', methods=['GET', 'POST'])
@@ -103,28 +97,31 @@ def reset_request():
         user = User.query.filter_by(email=request.form.get('email').strip().lower()).first()
         if user:
             send_reset_email(user)
-            flash("An email has been sent with instructions to reset your password.", "info")
+            flash("An email has been sent with instructions to reset your password.", "success")
         else:
             flash("User not found!", "danger")
         return redirect(url_for('main.login'))
     return render_template('main/reset_request.html')
 
-
 # ------ Reset Password <TOKEN> Route ------ #
 @main.route('/reset_password/<token>/', methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('users.profile'))
+        return redirect(url_for('share.file'))
     user = User.verify_reset_token(token)
     if user is None:
         flash("That is an invalid or expired token", "danger")
         return redirect(url_for('main.reset_request'))
     if request.method == 'POST':
-        user.password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
-        db.session.commit()
-        flash("Your password has been updated! You are now able to login", "success")
-        return redirect(url_for('main.login'))
-    return render_template('main/reset_token.html')
+        if request.form.get('password') == request.form.get('cpassword'):
+            user.password = bcrypt.generate_password_hash(request.form.get('password')).decode('utf-8')
+            db.session.commit()
+            flash("Your password has been updated! You are now able to login", "success")
+            return redirect(url_for('main.login'))
+        else:
+            flash("Password and confirm password must match.", "danger")
+            return redirect(url_for('main.reset_token', token=token))
+    return render_template('main/reset_token.html', token=token)
 
 @main.route('/newsletter/', methods=['POST'])
 def newsletter():
@@ -143,3 +140,31 @@ def newsletter():
     else:
         flash("You have already subscribed to newsletter.", "success")
         return redirect(url_for('main.home'))
+
+@main.route('/dashboard/', methods=['GET','POST'])
+@login_required
+def dashboard():
+    files = File.query.filter_by(user_id=current_user.id).all()
+    return render_template('main/dashboard.html', dashboard="active", files=files)
+
+@main.route('/settings/', methods=['GET','POST'])
+@login_required
+def settings():
+    if request.method == 'POST':
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        cpassword = request.form.get('cpassword')
+        if bcrypt.check_password_hash(current_user.password, current_password):
+            if new_password == cpassword:
+                current_user.password = bcrypt.generate_password_hash(new_password)
+                db.session.commit()
+                logout_user()
+                flash("Password changed successfully.", "success")
+                return redirect(url_for('main.login'))
+            else:
+                flash("Password and confirm password does not match.", "danger")
+                return redirect(url_for('main.settings'))
+        else:
+            flash("Current password does not match.", "danger")
+            return redirect(url_for('main.settings'))
+    return render_template('main/settings.html', settings="active")

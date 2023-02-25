@@ -47,7 +47,11 @@ Home
                                     easily. Password protected
                                     files. Delete files automatically once downloaded.</p>
                                 <div class="slider__btn wow fadeInUp" data-wow-delay="1.2s">
+                                    {% if current_user.is_authenticated %}
+                                    <a href="{{ url_for('share.file') }}" class="tg-btn-1"><span>Share File</span></a>
+                                    {% else %}
                                     <a href="{{ url_for('main.register') }}" class="tg-btn-1"><span>Register</span></a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -140,10 +144,8 @@ Home
 
     <!-- area-background-start -->
     <div class="area-background" data-background="{{ url_for('static', filename='assets/img/bg/area_bg01.jpg') }}">
-        <br>
-        <br>
         <!-- about-area -->
-        <div class="container px-4 py-5" id="featured-3">
+        <!-- <div class="container px-4 py-5" id="featured-3">
             <h2 class="pb-2 border-bottom text-center">MORE THEN JUST SHARING AND STORAGE</h2>
             <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
                 <div class="feature col">
@@ -177,7 +179,7 @@ Home
 
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- about-area-end -->
 
 
@@ -192,14 +194,53 @@ Home
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-7 col-md-10">
                     <div class="section__title text-center mb-60">
-                        <span class="sub-title tg__animate-text">Handles all of your file needs</span>
-                        <p class="title">File storage made easy – including powerful features you won’t find
-                            anywhere else. Whether you’re sharing photos, videos, audio, or docs, MediaFire can
-                            simplify your workflow.</p>
+                        <span class="sub-title tg__animate-text" style="font-size: 3rem;">
+                            Share Files Easily & Securely
+                        </span>
                     </div>
                 </div>
             </div>
             <div class="row justify-content-center">
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".6s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team08.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Register / Login</a></h4>
+                            <br>
+                            <span class="designation">Register / login on the website to share files easily and
+                                securely. </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".8s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team06.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Upload File</a></h4>
+                            <br>
+                            <span class="designation">Upload your file that you want to share.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".4s">
+                    <div class="team__item">
+                        <div class="team__thumb">
+                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team07.png') }}"
+                                    alt="img"></a>
+                        </div>
+                        <div class="team__content">
+                            <h4 class="name"><a href="#">Choose Options</a></h4>
+                            <span class="designation">As we promise to share your file using encryption set your unique
+                                password.</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".2s">
                     <div class="team__item">
                         <div class="team__thumb">
@@ -207,48 +248,10 @@ Home
                                     alt="img"></a>
                         </div>
                         <div class="team__content">
-                            <h4 class="name"><a href="#">share</a></h4>
-                            <span class="designation">Share through email, link, or social network. Unlimited
+                            <h4 class="name"><a href="#">Share</a></h4>
+                            <span class="designation">Share the link with password.
+                                Unlimited
                                 downloads. No wait times.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".4s">
-                    <div class="team__item">
-                        <div class="team__thumb">
-                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team06.png') }}"
-                                    alt="img"></a>
-                        </div>
-                        <div class="team__content">
-                            <h4 class="name"><a href="#">Collaborate</a></h4>
-                            <span class="designation">Store and share any file type. Share folders of project files.
-                                Easily email large files.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".6s">
-                    <div class="team__item">
-                        <div class="team__thumb">
-                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team07.png') }}"
-                                    alt="img"></a>
-                        </div>
-                        <div class="team__content">
-                            <h4 class="name"><a href="#">Store</a></h4>
-                            <span class="designation">10GB for free. Up to 50GB free with bonuses. Store all your
-                                photos, audio, and videos.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".8s">
-                    <div class="team__item">
-                        <div class="team__thumb">
-                            <a href="#"><img src="{{ url_for('static', filename='assets/img/team/team08.png') }}"
-                                    alt="img"></a>
-                        </div>
-                        <div class="team__content">
-                            <h4 class="name"><a href="#">Access</a></h4>
-                            <span class="designation">Always have your important files with you. Never forget your
-                                work at home.</span>
                         </div>
                     </div>
                 </div>

@@ -52,6 +52,7 @@ class File(db.Model):
     is_expiry = db.Column(db.Boolean, default=False)
     expires_at = db.Column(db.DateTime)
     uploaded_at = db.Column(db.DateTime)
+    link = db.Column(db.String(1000), nullable=False, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Newsletter(db.Model):

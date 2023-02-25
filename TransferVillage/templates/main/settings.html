@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Settings
+{% endblock title %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<main class="main--area">
+    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <div class="col-12">
+                        <section class="container">
+                            <div class="col-md-10 mx-auto col-lg-5 mb-3 mt-60">
+                                <div class="contact__form-wrap">
+                                    <h2>Change Your Password</h2>
+                                    <form class="p-4 p-md-5  bg-dark" action="{{ url_for('main.settings') }}"
+                                        method="post">
+                                        <div class="col-lg-12">
+                                            <div class="input-grp">
+                                                <input name="current_password" type="password"
+                                                    placeholder="Current Password" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="input-grp">
+                                                <input name="new_password" type="password" placeholder="New Password"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="input-grp">
+                                                <input name="cpassword" type="password" placeholder="Confirm Password"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <button class="submit-btn w-100 btn btn-lg btn-warning justify-content-center"
+                                            type="submit">Update Password</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock %}

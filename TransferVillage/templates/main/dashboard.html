@@ -1,0 +1,101 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+User Dashboard
+{% endblock title %}
+
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- main-area -->
+<main class="main--area">
+
+    <!-- breadcrumb-area -->
+    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="container">
+                            <h2> Dashboard</h2>
+                            <div class="table-responsive">
+                                {% if files %}
+                                <table class="table table-success table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">S.No</th>
+                                            <th scope="col">Original Filename</th>
+                                            <th scope="col">Password</th>
+                                            <th scope="col">Upload Date & Time</th>
+                                            <th scope="col">Expiry Date & Time</th>
+                                            <th scope="col" colspan="2">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for file in files %}
+                                        <tr>
+                                            <td>{{ loop.index }}</td>
+                                            <td>{{ file.original_filename }}</td>
+                                            {% if file.is_private %}
+                                            <td>{{ file.password }}</td>
+                                            {% else %}
+                                            <td>Public File</td>
+                                            {% endif %}
+                                            <td>2023-01-23</td>
+                                            {% if file.is_expiry %}
+                                            <td>2023-01-25</td>
+                                            {% else %}
+                                            <td>Available all time</td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="#"><i class="bi bi-trash3" style="color: red;">&nbsp;
+                                                        Delete</i></a>
+                                            </td>
+                                            <td>
+                                                <a href="#"><i class="bi bi-pencil-square" style="color: black;">&nbsp;
+                                                        Modify</i></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <span style="color: white;">NOTE: Click on file name to download.</span>
+                                {% else %}
+                                All shared files will be shown here.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+{% endblock content %}

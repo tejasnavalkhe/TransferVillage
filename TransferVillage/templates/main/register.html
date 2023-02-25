@@ -6,11 +6,36 @@ Register
 
 {% block content %}
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
 <!-- main-area -->
 <main class="main--area">
 
     <!-- breadcrumb-area -->
-    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+    <section class="breadcrumb-area breadcrumb__hide-img"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
         style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
         <div class="container">
             <div class="breadcrumb__wrapper">
@@ -21,44 +46,49 @@ Register
                             <div class="row justify-content-center">
                                 <div class="col-lg-6 col-md-10">
                                     <div class="contact__form-wrap">
-                                        <form id="contact-form" action="{{ url_for('main.register') }}" method="POST">
+                                        <form action="{{ url_for('main.register') }}" method="post">
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
                                                         <input name="fname" type="text" placeholder="First Name"
-                                                            required>
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
                                                         <input name="lname" type="text" placeholder="Last Name"
-                                                            required>
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
-                                                        <input name="email" type="email" placeholder="Email" required>
+                                                        <input name="email" type="email" placeholder="Email"
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
                                                         <input name="mobile_number" type="number"
-                                                            placeholder="Mobile number" required>
+                                                            placeholder="Mobile number"
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
                                                         <input name="password" type="password" placeholder="Password"
-                                                            required>
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-grp">
                                                         <input name="cpassword" type="password"
-                                                            placeholder="Confirm Password" required>
+                                                            placeholder="Confirm Password"
+                                                            style="border-color: var(--tg-theme-primary);" required>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="submit-btn">Submit Now</button>
+                                                <button type="submit"
+                                                    class="submit-btn  w-100 btn btn-lg btn-warning justify-content-center">Register
+                                                    Now</button>
                                         </form>
                                     </div>
                                 </div>

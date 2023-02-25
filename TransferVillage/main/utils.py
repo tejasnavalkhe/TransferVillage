@@ -24,10 +24,11 @@ Mobile Number: {mobile}
 
 def send_reset_email(user):
     token = user.get_reset_token()
+    print(url_for('main.reset_token', token=token, _external=True))
     msg = Message('Password Reset Request',
                   sender=('TEJEarning', 'support@tejearning.com'), recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link. The link will expire in 10 minutes:
-{url_for('users.reset_token', token=token, _external=True)}
+{url_for('main.reset_token', token=token, _external=True)}
 
 If your did not make this request then simply ignore this email and no changes will be made.
 '''

@@ -24,7 +24,7 @@
 
     <!-- scroll-top -->
     <button class="scroll__top scroll-to-target" data-target="html">
-        <i class="flaticon-right-arrow"></i>
+        <i class="bi bi-arrow-up-circle"></i>
     </button>
     <!-- scroll-top-end-->
 
@@ -34,21 +34,27 @@
             <div class="container custom-container">
                 <div class="row">
                     <div class="col-12">
-                        <div class="mobile-nav-toggler"><i class="fas fa-bars"></i></div>
+                        <div class="mobile-nav-toggler"><i class="bi bi-bar-chart-steps"></i></div>
                         <div class="tgmenu__wrap">
                             <nav class="tgmenu__nav">
                                 <div class="logo">
                                     <h1><a href="{{ url_for('main.home') }}">Transfer Village</a></h1>
                                 </div>
                                 <div class="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
-                                    <!-- <ul class="navigation">
-                                        <li class="active menu-item-has-children"><a
+                                    <ul class="navigation">
+                                        {% if current_user.is_authenticated %}
+                                        <li class="{{ home }} menu-item-has-children"><a
                                                 href="{{ url_for('main.home') }}">Home</a>
-
                                         </li>
-                                        <li><a href="#">ABOUT US</a></li>
-                                        <li><a href="#">Contact</a></li>
-                                    </ul> -->
+                                        <li class="{{ dashboard }} menu-item-has-children"><a
+                                                href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                                        </li>
+                                        <li class="{{ settings }} menu-item-has-children"><a
+                                                href="{{ url_for('main.settings') }}">Settings</a>
+                                        </li>
+                                        <li><a href="{{ url_for('main.logout') }}">Log out</a></li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
                                 <div class="tgmenu__action d-none d-md-block">
                                     <ul class="list-wrap">
@@ -85,7 +91,7 @@
                                 <div class="tgmobile__menu-outer">
                                     <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
                                 </div>
-                                <div class="social-links">
+                                <!-- <div class="social-links">
                                     <ul class="list-wrap">
                                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
@@ -93,7 +99,7 @@
                                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                                         <li><a href="#"><i class="fab fa-youtube"></i></a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </nav>
                         </div>
                         <div class="tgmobile__menu-backdrop"></div>
@@ -127,7 +133,7 @@
                                     easily. Password protected
                                     files. Delete files automatically once downloaded.</p>
                                 <p class="social-title">Active <span>With Us <i
-                                            class="fas fa-angle-double-right"></i></span></p>
+                                            class="bi bi-caret-right-square"></i></span></p>
                                 <div class="footer-social">
                                     <a href="#"><img
                                             src="{{ url_for('static', filename='assets/img/icons/social_icon01.png') }}"
@@ -163,7 +169,7 @@
                                 <form action="{{ url_for('main.newsletter') }}" method="post"
                                     class="footer-newsletter-form">
                                     <input name="email" type="email" placeholder="Your email address" required>
-                                    <button type="submit"><i class="flaticon-paper-plane"></i></button>
+                                    <button type="submit"><i class="bi bi-envelope-paper-heart"></i></button>
                                 </form>
                             </div>
                         </div>

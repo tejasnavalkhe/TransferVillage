@@ -5,11 +5,37 @@ Login
 {% endblock title %}
 
 {% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
 <!-- main-area -->
 <main class="main--area">
 
     <!-- breadcrumb-area -->
-    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+    <section class="breadcrumb-area breadcrumb__hide-img"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
         style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
         <div class="container">
             <div class="breadcrumb__wrapper">
@@ -19,15 +45,17 @@ Login
                         <br>
                         <div class="col-md-10 mx-auto col-lg-5 mb-3 mt-60">
                             <div class="contact__form-wrap">
-                                <form class="p-4 p-md-5 bg-dark" action="{{ url_for('main.login') }}" method="post">
+                                <form class="p-4 p-md-5" action="{{ url_for('main.login') }}" method="post">
                                     <div class="col-lg-12">
                                         <div class="input-grp">
-                                            <input name="email" type="email" placeholder="Email" required>
+                                            <input name="email" type="email" placeholder="Email"
+                                                style="border-color: var(--tg-theme-primary);" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="input-grp">
-                                            <input name="password" type="password" placeholder="Password" required>
+                                            <input name="password" type="password" placeholder="Password"
+                                                style="border-color: var(--tg-theme-primary);" required>
                                         </div>
                                     </div>
 
@@ -43,7 +71,7 @@ Login
                                         <a href="{{ url_for('main.reset_request') }}" class="link-danger">Forgot
                                             password?</a>
                                     </div>
-                                    <button class="w-100 btn btn-lg btn-warning justify-content-center"
+                                    <button class="submit-btn w-100 btn btn-lg btn-warning justify-content-center"
                                         type="submit">Sign In</button>
                                     <hr class="my-4">
                                     <div class="text-center">
