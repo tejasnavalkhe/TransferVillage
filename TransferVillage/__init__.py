@@ -27,9 +27,9 @@ def create_app(config_class=Config):
 
     from TransferVillage.main.views import main
     from TransferVillage.errors.views import errors
-    from TransferVillage.share.views import share
+    from TransferVillage.files.views import files
     app.register_blueprint(main)
     app.register_blueprint(errors)
-    app.register_blueprint(share)
+    app.register_blueprint(files)
 
     return app

@@ -121,86 +121,89 @@
         </section>
         <!-- breadcrumb-area-end -->
 
-     
+
 
 
 
     </main>
     <!-- main-area-end -->
-<div class="album py-5 bg-dark">
-    <div class="container" >
-        <div class="contact__form-wrap">
+    <div class="album py-5 bg-dark">
+        <div class="container">
+            <div class="contact__form-wrap">
 
-<form class="row g-3 ">
-  <div class="col-md-6 ">
-    <div class="input-grp">
-  <div class="mb-3">
-  <label for="formFileMultiple "  class="form-label">Files Input </label>
-  <input class="form-control" style="border-color:white;" type="file" id="formFileMultiple" multiple>
- </div>
-</div>
-  </div>
+                <form class="row g-3 ">
+                    <div class="col-md-6 ">
+                        <div class="input-grp">
+                            <div class="mb-3">
+                                <label for="formFileMultiple " class="form-label">Files Input </label>
+                                <input class="form-control" style="border-color:white;" type="file"
+                                    id="formFileMultiple" multiple>
+                            </div>
+                        </div>
+                    </div>
 
-  <div class="col-md-6">
-    <div class="input-grp">
-    <label for="inputPassword4" class="form-label">Password</label>
-    <input type="password" style="border-color:white;" class="form-control" id="inputPassword4">
-    </div>  
-</div>
- 
+                    <div class="col-md-6">
+                        <div class="input-grp">
+                            <label for="inputPassword4" class="form-label">Password</label>
+                            <input type="password" style="border-color:white;" class="form-control" id="inputPassword4">
+                        </div>
+                    </div>
 
-  
 
-  <div class="col-md-6">
-    
-  <div class="checkbox form-inline">
-      <label><input type="checkbox" class="form-label me-1" name="">Is Private</label>
-      <input class="form-control "style="border-color:white;"  type="text" name=""  placeholder="is private">
+
+
+                    <div class="col-md-6">
+
+                        <div class="checkbox form-inline">
+                            <label><input type="checkbox" class="form-label me-1" name="">Is Private</label>
+                            <input class="form-control " style="border-color:white;" type="text" name=""
+                                placeholder="is private">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="checkbox form-inline">
+                            <label><input type="checkbox" class="form-label me-1" name="">Expiry</label>
+                            <input class="form-control " type="text" name="">
+                        </div>
+                    </div>
+                    <script>
+                        $('.checkbox :checkbox').on('change', function (e) {
+                            $(this).closest('label').next(':text').toggle(this.checked);
+                        }).trigger('change');
+                    </script>
+
+
+
+                    <div class="col-md-6">
+                        <div class="input-grp">
+                            <label for="inputCity" class="form-label">Date Tme </label>
+                            <input type="datetime-local" style="border-color:white;" class="form-control"
+                                id="inputCity">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-grp">
+                            <label for="inputState" class="form-label">State</label>
+                            <select id="inputState" style="border-color:white;" class="form-select">
+                                <option selected>Choose...</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </form>
+
+
+
+            </div>
+
+        </div>
     </div>
-  </div>
-  <div class="col-md-6">
-    <div class="checkbox form-inline">
-        <label><input type="checkbox" class="form-label me-1" name="">Expiry</label>
-        <input class="form-control " type="text" name=""  >
-      </div>         
-    </div>  
-  <script>
-      $('.checkbox :checkbox').on('change', function(e) {
-    $(this).closest('label').next(':text').toggle(this.checked);
-  }).trigger('change');
-  </script>
-  
-  
-
-  <div class="col-md-6">
-    <div class="input-grp">
-    <label for="inputCity" class="form-label">Date Tme </label>
-    <input type="datetime-local" style="border-color:white;"  class="form-control" id="inputCity">
-</div>  
-</div>
-
-  <div class="col-md-6">
-    <div class="input-grp">
-    <label for="inputState" class="form-label">State</label>
-    <select id="inputState" style="border-color:white;"  class="form-select">
-      <option selected>Choose...</option>
-      <option>...</option>
-    </select>
-    </div>
-  </div>
-
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
- 
-</form>
-
-
-
-</div>
-
-    </div>
-  </div>
 
 
 

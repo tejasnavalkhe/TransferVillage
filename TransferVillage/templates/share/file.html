@@ -1,0 +1,134 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Share File
+{% endblock title %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for cat, msg in messages %}
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast fixed-top m-3 ms-auto" data-bs-autohide="true">
+    <div class="toast-header">
+        <span>Activity</span>
+        <strong class="me-auto"></strong>
+        <small id="activity_time"></small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    {% if cat == 'danger' %}
+    <div class="toast-body" style="background-color: red; color: white;">
+        {{ msg }}
+    </div>
+    {% elif cat == 'success' %}
+    <div class="toast-body" style="background-color: #28a745; color: white;">
+        {{ msg }}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- main-area -->
+<main class="main--area">
+    <section class="breadcrumb-area breadcrumb__hide-img"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <div class="album py-5">
+                        <div class="container">
+                            <div class="contact__form-wrap">
+                                <form class="row g-3" action="{{ url_for('files.upload') }}" method="post"
+                                    enctype="multipart/form-data">
+                                    <div class="col-md-6">
+                                        <div class="input-grp">
+                                            <label for="formFileMultiple" class="form-label">Select Files</label>
+                                            <input name="files" type="file" placeholder="Confirm Password"
+                                                style="border-color: var(--tg-theme-primary);" id="formFileMultiple"
+                                                multiple required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="input-grp">
+                                            <label for="inputState" class="form-label">Convert File To</label>
+                                            <select class="form-select form-select-lg mb-3" id="inputState"
+                                                style="border-color: white;" name="convert">
+                                                <option value="0" selected>Don't Convert</option>
+                                                <option value="PDF">PDF</option>
+                                                <option value="WORD">WORD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="checkbox form-inline">
+                                            <label><input type="checkbox" class="form-label me-1" id="is_private"
+                                                    name="is_private" checked>File
+                                                is
+                                                Private</label>
+                                        </div>
+                                        <div class="input-grp" id="password_grp">
+                                            <label for="password" class="form-label">Set Password</label>
+                                            <input type="password"
+                                                style="border-color:var(--tg-theme-primary); color: white;"
+                                                class="form-control" id="password" name="password"
+                                                placeholder="Set Password">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkbox form-inline">
+                                            <label><input type="checkbox" class="form-label me-1" id="is_expiry"
+                                                    name="is_expiry">Delete
+                                                Files
+                                                Automatically?</label>
+                                        </div>
+                                        <div class="input-grp" id="expiry_datetime_grp" style="display: none;">
+                                            <label for="inputDateTime" class="form-label">Expiry Date Time</label>
+                                            <input type="datetime-local"
+                                                style="border-color:var(--tg-theme-primary); color: white;"
+                                                style="border-color:white;" class="form-control" id="inputDateTime"
+                                                name="expiry_datetime">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit"
+                                            class="submit-btn btn btn-lg btn-warning justify-content-center">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- main-area-end -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+    integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+        $('#is_private').click(function () {
+            if ($(this).prop("checked") == true) {
+                document.getElementById("password_grp").style.display = 'block';
+            }
+            else if ($(this).prop("checked") == false) {
+                document.getElementById("password_grp").style.display = 'none';
+            }
+        });
+        $('#is_expiry').click(function () {
+            if ($(this).prop("checked") == true) {
+                document.getElementById("expiry_datetime_grp").style.display = 'block';
+            }
+            else if ($(this).prop("checked") == false) {
+                document.getElementById("expiry_datetime_grp").style.display = 'none';
+            }
+        });
+    });
+</script>
+
+{% endblock content %}
