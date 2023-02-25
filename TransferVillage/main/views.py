@@ -20,7 +20,7 @@ def home():
 @main.route('/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('share.file'))
+        return redirect(url_for('files.upload'))
     if request.method == 'POST':
         if not User.query.filter_by(email=request.form.get('email').strip().lower()).first():
             s = URLSerializer(current_app.config['SECRET_KEY'])
@@ -52,7 +52,7 @@ def confirm_email(token):
                     mobile=data["mobile_number"])
         login_user(user)
         flash("Your account has been created successfully!", "success")
-        return redirect(url_for('share.file'))
+        return redirect(url_for('files.upload'))
     except (SignatureExpired, BadTimeSignature):
         flash("That is an invalid or expired token", "danger")
         return redirect(url_for('main.register'))
@@ -61,7 +61,7 @@ def confirm_email(token):
 @main.route('/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('share.file'))
+        return redirect(url_for('files.upload'))
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email').strip().lower()).first()
         if user:
@@ -70,7 +70,7 @@ def login():
                             duration=timedelta(weeks=1))
                 next_page = request.args.get('next')
                 flash("User logged in successfully!", "success")
-                return redirect(next_page) if next_page else redirect(url_for('share.file'))
+                return redirect(next_page) if next_page else redirect(url_for('main.dashboard'))
             else:
                 flash("Please check you password. Password don't match!", "danger")
                 return redirect(url_for('main.login'))
@@ -92,7 +92,7 @@ def logout():
 @main.route('/reset_password/', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('share.file'))
+        return redirect(url_for('files.upload'))
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email').strip().lower()).first()
         if user:
@@ -107,7 +107,7 @@ def reset_request():
 @main.route('/reset_password/<token>/', methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('share.file'))
+        return redirect(url_for('files.upload'))
     user = User.verify_reset_token(token)
     if user is None:
         flash("That is an invalid or expired token", "danger")
