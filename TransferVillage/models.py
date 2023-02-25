@@ -45,6 +45,7 @@ class User(db.Model, UserMixin):
 
 class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    folder_name = db.Column(db.String(125))
     original_filename = db.Column(db.String(125))
     filename = db.Column(db.String(125), unique=True)
     is_private = db.Column(db.Boolean, default=False)
