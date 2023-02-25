@@ -1,0 +1,77 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Register
+{% endblock title %}
+
+{% block content %}
+
+<!-- main-area -->
+<main class="main--area">
+
+    <!-- breadcrumb-area -->
+    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <!-- contact-area -->
+                    <section class="contact-area">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6 col-md-10">
+                                    <div class="contact__form-wrap">
+                                        <form id="contact-form" action="{{ url_for('main.register') }}" method="POST">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="fname" type="text" placeholder="First Name"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="lname" type="text" placeholder="Last Name"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="email" type="email" placeholder="Email" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="mobile_number" type="number"
+                                                            placeholder="Mobile number" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="password" type="password" placeholder="Password"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-grp">
+                                                        <input name="cpassword" type="password"
+                                                            placeholder="Confirm Password" required>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="submit-btn">Submit Now</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- contact-area-end -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb-area-end -->
+</main>
+<!-- main-area-end -->
+
+{% endblock %}
