@@ -59,7 +59,7 @@
                                 <div class="tgmenu__action d-none d-md-block">
                                     <ul class="list-wrap">
                                         {% if current_user.is_authenticated %}
-                                        <li class="header-btn"><a href="{{ url_for('share.file') }}"
+                                        <li class="header-btn"><a href="{{ url_for('files.upload') }}"
                                                 class="tg-border-btn"><i class="bi bi-pencil-square"></i> Share File</a>
                                         </li>
                                         {% else %}
@@ -157,7 +157,7 @@
                             <ul class="list-wrap menu">
                                 <li><a href="{{ url_for('main.login') }}">Sign In</a></li>
                                 <li><a href="{{ url_for('main.register') }}">Register</a></li>
-                                <li><a href="{{ url_for('share.file') }}">Share File</a></li>
+                                <li><a href="{{ url_for('files.upload') }}">Share File</a></li>
                             </ul>
                         </div>
                     </div>
@@ -201,7 +201,6 @@
     <!-- JS here -->
     <script src="{{ url_for('static', filename='assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/plugins.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/ajax-form.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 
     <!-- Toast Script -->

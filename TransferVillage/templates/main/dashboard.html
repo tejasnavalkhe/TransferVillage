@@ -35,7 +35,8 @@ User Dashboard
 <main class="main--area">
 
     <!-- breadcrumb-area -->
-    <section class="breadcrumb-area breadcrumb__hide-img" data-background="assets/img/slider/slider_bg.jpg"
+    <section class="breadcrumb-area breadcrumb__hide-img"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
         style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
         <div class="container">
             <div class="breadcrumb__wrapper">
@@ -86,7 +87,7 @@ User Dashboard
                                 </table>
                                 <span style="color: white;">NOTE: Click on file name to download.</span>
                                 {% else %}
-                                All shared files will be shown here.
+                                All shared files will be shown here. Share your files with others.
                             </div>
                             {% endif %}
                         </div>

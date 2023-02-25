@@ -48,7 +48,7 @@ Home
                                     files. Delete files automatically once downloaded.</p>
                                 <div class="slider__btn wow fadeInUp" data-wow-delay="1.2s">
                                     {% if current_user.is_authenticated %}
-                                    <a href="{{ url_for('share.file') }}" class="tg-btn-1"><span>Share File</span></a>
+                                    <a href="{{ url_for('files.upload') }}" class="tg-btn-1"><span>Share File</span></a>
                                     {% else %}
                                     <a href="{{ url_for('main.register') }}" class="tg-btn-1"><span>Register</span></a>
                                     {% endif %}
