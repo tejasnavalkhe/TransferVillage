@@ -10,11 +10,11 @@ tz = pytz.timezone("Asia/Calcutta")
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(str(user_id))
 
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(125), primary_key=True)
     fname = db.Column(db.String(128))
     lname = db.Column(db.String(128))
     email = db.Column(db.String(140), unique=True, nullable=False)
@@ -44,7 +44,7 @@ class User(db.Model, UserMixin):
         return f"User('{self.fname}' '{self.lname}')"
 
 class File(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(125), primary_key=True)
     folder_name = db.Column(db.String(125))
     original_filename = db.Column(db.String(125))
     filename = db.Column(db.String(125), unique=True)
@@ -54,9 +54,9 @@ class File(db.Model):
     expires_at = db.Column(db.DateTime)
     uploaded_at = db.Column(db.DateTime)
     link = db.Column(db.String(1000), nullable=False, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(125), db.ForeignKey('user.id'))
 
 class Newsletter(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(125), primary_key=True)
     email = db.Column(db.String(140), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(tz))

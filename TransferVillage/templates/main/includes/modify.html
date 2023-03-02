@@ -1,0 +1,77 @@
+<!-- Modal -->
+<div class="modal fade" id="ModifyModal-{{ file.id }}" tabindex="-1" aria-labelledby="ModifyModal-{{ file.id }}Label"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="color: black;">
+            <form action="{{ url_for('main.modify_file', file_id=file.id) }}" method="post">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModifyModal-{{ file.id }}Label" style="color: black;">Update File
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: black;">
+                    <div class="col-md-6">
+                        <div class="checkbox form-inline">
+                            {% if file.is_private %}
+                            <label style="color: black;"><input type="checkbox" class="form-label me-1"
+                                    id="is_private_{{ file.id }}" name="is_private" checked>File
+                                is
+                                Private</label>
+                            {% else %}
+                            <label style="color: black;"><input type="checkbox" class="form-label me-1"
+                                    id="is_private_{{ file.id }}" name="is_private">File
+                                is
+                                Private</label>
+                            {% endif %}
+                        </div>
+                        {% if file.is_private %}
+                        <div class="input-grp" id="password_grp_{{ file.id }}">
+                            <label for="password" class="form-label" style="color: black;">Your Password</label>
+                            <input type="text" style="border-color:var(--tg-theme-primary); color: black;"
+                                class="form-control" id="password" name="password" value="{{ file.password }}">
+                        </div>
+                        {% else %}
+                        <div class="input-grp" id="password_grp_{{ file.id }}" style="display: none;">
+                            <label for="password" class="form-label" style="color: black;">Set Password</label>
+                            <input type="text" style="border-color:var(--tg-theme-primary); color: black;"
+                                class="form-control" id="password" name="password" placeholder="Set Password">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="checkbox form-inline">
+                            {% if file.is_expiry %}
+                            <label style="color: black;"><input type="checkbox" class="form-label me-1"
+                                    id="is_expiry_{{ file.id }}" name="is_expiry" checked>Delete
+                                Files
+                                Automatically?</label>
+                            {% else %}
+                            <label style="color: black;"><input type="checkbox" class="form-label me-1"
+                                    id="is_expiry_{{ file.id }}" name="is_expiry">Delete
+                                Files
+                                Automatically?</label>
+                            {% endif %}
+                        </div>
+                        {% if file.is_expiry %}
+                        <div class="input-grp" id="expiry_datetime_grp_{{ file.id }}">
+                            <label for="inputDateTime" class="form-label" style="color: black;">Expiry Date Time</label>
+                            <input type="datetime-local" style="border-color:var(--tg-theme-primary); color: black;"
+                                class="form-control" id="inputDateTime" value="{{ file.expires_at }}"
+                                name="expiry_datetime">
+                        </div>
+                        {% else %}
+                        <div class="input-grp" id="expiry_datetime_grp_{{ file.id }}" style="display: none;">
+                            <label for="inputDateTime" class="form-label" style="color: black;">Expiry Date Time</label>
+                            <input type="datetime-local" style="border-color:var(--tg-theme-primary); color: black;"
+                                class="form-control" id="inputDateTime" name="expiry_datetime">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

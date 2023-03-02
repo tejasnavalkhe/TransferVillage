@@ -3,14 +3,17 @@ from flask_login import login_user, logout_user, current_user, login_required
 from TransferVillage.models import *
 from TransferVillage import db, bcrypt
 from TransferVillage.main.utils import *
+from TransferVillage.files.utils import *
 from datetime import datetime, timedelta
 import pytz
 from itsdangerous import URLSafeTimedSerializer as URLSerializer
 from itsdangerous import SignatureExpired, BadTimeSignature
+from uuid import uuid4
 
 
 main = Blueprint('main', __name__)
 tz = pytz.timezone("Asia/Calcutta")
+s3 = BOTO_S3()
 
 @main.route('/')
 def home():
@@ -44,7 +47,7 @@ def confirm_email(token):
     s = URLSerializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(token, salt="send-email-confirmation", max_age=600)
-        user = User(fname=data["fname"], email=data["email"], lname=data["lname"], mobile_number=data["mobile_number"],
+        user = User(id=str(uuid4()),fname=data["fname"], email=data["email"], lname=data["lname"], mobile_number=data["mobile_number"],
                     password=bcrypt.generate_password_hash(data["password"]).decode('utf-8'), created_at=datetime.now(tz), modified_at=datetime.now(tz))
         db.session.add(user)
         db.session.commit()
@@ -69,6 +72,8 @@ def login():
                 login_user(user, remember=True if request.form.get('remember_me') == 'on' else False,
                             duration=timedelta(weeks=1))
                 next_page = request.args.get('next')
+                if not next_page and len(user.files.all()) == 0:
+                    next_page = url_for('files.upload')
                 flash("User logged in successfully!", "success")
                 return redirect(next_page) if next_page else redirect(url_for('main.dashboard'))
             else:
@@ -132,7 +137,7 @@ def newsletter():
 
     email = email.strip().lower()
     if not Newsletter.query.filter_by(email=email).first():
-        new_newsletter = Newsletter(email=email, created_at=datetime.now(tz))
+        new_newsletter = Newsletter(id=str(uuid4()), email=email, created_at=datetime.now(tz))
         db.session.add(new_newsletter)
         db.session.commit()
         flash("Successfully subscribed to newsletter.", "success")
@@ -168,3 +173,60 @@ def settings():
             flash("Current password does not match.", "danger")
             return redirect(url_for('main.settings'))
     return render_template('main/settings.html', settings="active")
+
+@main.route('/file/delete/<file_id>/', methods=['POST'])
+@login_required
+def delete_file(file_id):
+    file_ = File.query.filter_by(id=file_id).first()
+    if file_:
+        if file_.folder_name:
+            s3.delete_file(file_.filename, file_.folder_name)
+        else:
+            s3.delete_file(file_.filename)
+        db.session.delete(file_)
+        db.session.commit()
+        folder_name = request.args.get('folder_name')
+        if folder_name:
+            files = File.query.filter_by(folder_name=folder_name).filter_by(user_id=current_user.id).all()
+            if len(files) == 0:
+                s3.delete_folder(folder_name)
+        flash("Your file has been deleted successfully.", "success")
+        return redirect(url_for('main.dashboard'))
+    else:
+        flash("File does not exist.", "danger")
+        return redirect(url_for('main.dashboard'))
+
+@main.route('/file/modify/<file_id>/', methods=['POST'])
+@login_required
+def modify_file(file_id):
+    file_ = File.query.filter_by(id=file_id).first()
+    if file_:
+        if request.form.get('is_private') == 'on':
+            file_.is_private = True
+            if not request.form.get('password'):
+                file_.password = str(uuid4())[0:8:]
+            else:
+                file_.password = request.form.get('password')
+        else:
+            file_.is_private = False
+            file_.password = None
+        if request.form.get('is_expiry') == 'on':
+            file_.is_expiry = True
+            expiry_datetime = request.form.get('expiry_datetime')
+            if expiry_datetime:
+                expiry_datetime_obj = datetime.strptime(expiry_datetime, '%Y-%m-%dT%H:%M')
+            else:
+                expiry_datetime_obj = str(datetime.now(tz) + timedelta(days=3))
+                expiry_datetime_obj = expiry_datetime_obj.split('.')[0]
+                expiry_datetime_obj = datetime.strptime(expiry_datetime_obj, '%Y-%m-%d %H:%M:%S')
+            file_.expires_at = expiry_datetime_obj
+        else:
+            file_.is_expiry = False
+            file_.expires_at = None
+
+        db.session.commit()
+        flash("The settings for your file has been updated successfully.", "success")
+        return redirect(url_for('main.dashboard'))
+    else:
+        flash("File does not exist.", "danger")
+        return redirect(url_for('main.dashboard'))

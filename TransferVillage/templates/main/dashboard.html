@@ -4,6 +4,80 @@
 User Dashboard
 {% endblock title %}
 
+{% block style %}
+<style>
+    #snackbar {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: var(--tg-theme-primary);
+        color: black;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        left: 50%;
+        bottom: 30px;
+        font-size: 17px;
+    }
+
+    #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+</style>
+{% endblock style %}
+
 
 {% block content %}
 
@@ -33,7 +107,6 @@ User Dashboard
 
 <!-- main-area -->
 <main class="main--area">
-
     <!-- breadcrumb-area -->
     <section class="breadcrumb-area breadcrumb__hide-img"
         data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
@@ -51,43 +124,83 @@ User Dashboard
                                         <tr>
                                             <th scope="col">S.No</th>
                                             <th scope="col">Original Filename</th>
-                                            <th scope="col">Password</th>
                                             <th scope="col">Upload Date & Time</th>
                                             <th scope="col">Expiry Date & Time</th>
-                                            <th scope="col" colspan="2">Action</th>
+                                            <th scope="col" colspan="3">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+                                            integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+                                            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
                                         {% for file in files %}
+                                        {% include 'main/includes/modify.html' %}
+                                        {% include 'main/includes/delete.html' %}
                                         <tr>
                                             <td>{{ loop.index }}</td>
-                                            <td>{{ file.original_filename }}</td>
-                                            {% if file.is_private %}
-                                            <td>{{ file.password }}</td>
-                                            {% else %}
-                                            <td>Public File</td>
-                                            {% endif %}
-                                            <td>2023-01-23</td>
+                                            <td><a href="{{ file.link }}"
+                                                    style="color: black; text-decoration-line: underline;"
+                                                    target="_blank">{{ file.original_filename.split('.')[0] }}.{{
+                                                    file.filename.split('.')[1] }}</a></td>
+                                            <td>{{ file.uploaded_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
                                             {% if file.is_expiry %}
-                                            <td>2023-01-25</td>
+                                            <td>{{ file.expires_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
                                             {% else %}
                                             <td>Available all time</td>
                                             {% endif %}
                                             <td>
-                                                <a href="#"><i class="bi bi-trash3" style="color: red;">&nbsp;
-                                                        Delete</i></a>
+                                                <a type="button" onclick="COPYTOCLIPBOARD('{{ file.id }}')"
+                                                    id="{{ file.id }}" url="{{ file.link }}">
+                                                    <i class="bi bi-clipboard-check new-btn"></i>&nbsp;
+                                                    Link</i>
+                                                </a>
+                                                <div id="{{ file.id }}" style="display: none;">{{ file.link }}</div>
                                             </td>
                                             <td>
-                                                <a href="#"><i class="bi bi-pencil-square" style="color: black;">&nbsp;
-                                                        Modify</i></a>
+                                                <a type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#DeleteModal-{{ file.id }}">
+                                                    <i class="bi bi-trash3" style="color: red;">&nbsp;
+                                                        Delete</i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#ModifyModal-{{ file.id }}">
+                                                    <i class="bi bi-pencil-square">&nbsp;
+                                                        Modify</i>
+                                                </a>
                                             </td>
                                         </tr>
+
+                                        <!-- Script for Password or Expiry DateTime -->
+                                        <script>
+                                            $(document).ready(function () {
+                                                $('#is_private_{{ file.id }}').click(function () {
+                                                    if ($(this).prop("checked") == true) {
+                                                        document.getElementById("password_grp_{{ file.id }}").style.display = 'block';
+                                                    }
+                                                    else if ($(this).prop("checked") == false) {
+                                                        document.getElementById("password_grp_{{ file.id }}").style.display = 'none';
+                                                    }
+                                                });
+                                                $('#is_expiry_{{ file.id }}').click(function () {
+                                                    if ($(this).prop("checked") == true) {
+                                                        document.getElementById("expiry_datetime_grp_{{ file.id }}").style.display = 'block';
+                                                    }
+                                                    else if ($(this).prop("checked") == false) {
+                                                        document.getElementById("expiry_datetime_grp_{{ file.id }}").style.display = 'none';
+                                                    }
+                                                });
+                                            });
+                                        </script>
+
                                         {% endfor %}
                                     </tbody>
                                 </table>
                                 <span style="color: white;">NOTE: Click on file name to download.</span>
                                 {% else %}
-                                All shared files will be shown here. Share your files with others.
+                                All shared files will appear here. Share your files with others.
                             </div>
                             {% endif %}
                         </div>
@@ -95,8 +208,24 @@ User Dashboard
                 </div>
             </div>
         </div>
+        <div id="snackbar">Link copied to clipboard</div>
     </section>
 </main>
 
+<script>
+    function COPYTOCLIPBOARD(div_id) {
+        let div = document.getElementById(div_id);
+        let url = div.getAttribute("url");
+        var inp = document.createElement('input');
+        document.body.appendChild(inp);
+        inp.value = url;
+        inp.select();
+        document.execCommand('copy', false);
+        inp.remove();
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
 
 {% endblock content %}

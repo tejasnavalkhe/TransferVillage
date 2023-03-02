@@ -17,6 +17,9 @@
 
     <!-- Page-Revealer -->
     <script src="{{ url_for('static', filename='assets/js/tg-page-head.js') }}"></script>
+    {% block style %}
+
+    {% endblock style %}
 </head>
 
 <body>
@@ -110,7 +113,6 @@
         </div>
     </header>
     <!-- header-area-end -->
-
 
 
     {% block content %}
