@@ -1,3 +1,5 @@
+import os
+
 class Config:
     # Change this for production server to False
     TESTING = True
@@ -9,8 +11,8 @@ class Config:
         SQLALCHEMY_DATABASE_URI = 'sqlite:///TransferVillage.db'
     else:
         # Production database
-        DATABASE_PASSWORD = '#TransferVillageMajor2023'
-        DATABASE_USER = 'root'
+        DATABASE_PASSWORD = '###**Major**###'
+        DATABASE_USER = 'major'
         DATABASE_IP = 'localhost'
         DATABASE_NAME = 'TransferVillage'
         SQLALCHEMY_DATABASE_URI = f'mysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_IP}/{DATABASE_NAME}'
@@ -19,15 +21,15 @@ class Config:
     MAIL_SERVER = 'smtp.zoho.in'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = 'support@tejearning.com'
-    MAIL_PASSWORD = 'jdV61S6xDJ64'
+    MAIL_USERNAME = os.getenv('TransferVillage_Email')
+    MAIL_PASSWORD = os.getenv('TransferVillage_Email_Password')
 
     # AWS Credentails
-    AWS_SERVICE_NAME = 's3'
-    AWS_REGION_NAME = 'eu-west-2'
-    AWS_BUCKET_NAME = 'transfervillage'
-    AWS_ACCESS_KEY_ID = 'AKIAT6T5Y3W3UZ2WI4C2'
-    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_SERVICE_NAME = os.getenv('AWS_SERVICE_NAME')
+    AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
+    AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
     # File related settings
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'docx', 'jpeg', 'xlsx'}
