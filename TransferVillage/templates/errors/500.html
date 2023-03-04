@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+500 Error - Transfer Village
+{% endblock title %}
+
+{% block content %}
+<!-- main-area -->
+<main class="main--area">
+    <!-- breadcrumb-area -->
+    <section class="breadcrumb-area breadcrumb__hide-img"
+        data-background="{{ url_for('static', filename='assets/img/slider/slider_bg.jpg') }}"
+        style="background-image: url(&quot;assets/img/bg/breadcrumb_bg02.jpg&quot;);">
+        <div class="container">
+            <div class="breadcrumb__wrapper">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb__content">
+                            <h2 class="title"> Error: 500 Internal Server Error</h2>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    {% if current_user.is_authenticated %}
+                                    <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}">Home</a></li>
+                                    {% endif %}
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb-area-end -->
+</main>
+<!-- main-area-end -->
+
+{% endblock content %}
