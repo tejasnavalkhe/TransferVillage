@@ -64,8 +64,16 @@ def upload():
                 if convert != '0':
                     file.save(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                     if convert == 'WORD' and file.filename.endswith('.pdf'):
-                        # Convert PDF to WORD
-                        pass
+                        file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                        os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                        with open(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.docx', 'rb') as new_file:
+                            result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.docx', folder_name)
+                            if result:
+                                unique_id = str(uuid4())
+                                _file = File(id=unique_id, folder_name=folder_name, original_filename=original_filename, filename=unique_filename.rsplit('.', 1)[0]+'.docx', is_private=is_private, password=password, is_expiry=is_expiry, expires_at=expiry_datetime_obj, uploaded_at=datetime.now(tz), link=url_for('files.share_file', filename=unique_filename.rsplit('.', 1)[0]+'.docx', _external=True), user_id=current_user.id)
+                                db.session.add(_file)
+                                db.session.commit()
+                                os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.docx')
                     elif convert == 'PDF' and file.filename.endswith('.docx'):
                         file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                         os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
@@ -76,6 +84,7 @@ def upload():
                                 _file = File(id=unique_id, folder_name=folder_name, original_filename=original_filename, filename=unique_filename.rsplit('.', 1)[0]+'.pdf', is_private=is_private, password=password, is_expiry=is_expiry, expires_at=expiry_datetime_obj, uploaded_at=datetime.now(tz), link=url_for('files.share_file', filename=unique_filename.rsplit('.', 1)[0]+'.pdf', _external=True), user_id=current_user.id)
                                 db.session.add(_file)
                                 db.session.commit()
+                                os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
                     else:
                         result = s3.upload_file(file, unique_filename, folder_name)
                         if result:
@@ -90,7 +99,6 @@ def upload():
                         _file = File(id=unique_id, folder_name=folder_name, original_filename=original_filename, filename=unique_filename, is_private=is_private, password=password, is_expiry=is_expiry, expires_at=expiry_datetime_obj, uploaded_at=datetime.now(tz), link=url_for('files.share_file', filename=unique_filename, _external=True), user_id=current_user.id)
                         db.session.add(_file)
                         db.session.commit()
-                    os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
             if len(files_not_allowed) > 0:
                 flash(f"Some files are not allowed to be uploaded because of the extension. File(s) is(are) {', '.join(files_not_allowed)}", "danger")
             else:
@@ -106,8 +114,16 @@ def upload():
             if convert != '0':
                 files[0].save(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                 if convert == 'WORD' and files[0].filename.endswith('.pdf'):
-                    # Convert PDF to WORD
-                    pass
+                    file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                    os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                    with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.docx', 'rb') as new_file:
+                        result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.docx')
+                        if result:
+                            unique_id = str(uuid4())
+                            _file = File(id=unique_id, folder_name=None, original_filename=original_filename, filename=unique_filename.rsplit('.', 1)[0]+'.docx', is_private=is_private, password=password, is_expiry=is_expiry, expires_at=expiry_datetime_obj, uploaded_at=datetime.now(tz), link=url_for('files.share_file', filename=unique_filename.rsplit('.', 1)[0]+'.docx', _external=True), user_id=current_user.id)
+                            db.session.add(_file)
+                            db.session.commit()
+                            os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.docx')
                 elif convert == 'PDF' and files[0].filename.endswith('.docx'):
                     file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                     os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
@@ -118,6 +134,7 @@ def upload():
                             _file = File(id=unique_id, folder_name=None, original_filename=original_filename, filename=unique_filename.rsplit('.', 1)[0]+'.pdf', is_private=is_private, password=password, is_expiry=is_expiry, expires_at=expiry_datetime_obj, uploaded_at=datetime.now(tz), link=url_for('files.share_file', filename=unique_filename.rsplit('.', 1)[0]+'.pdf', _external=True), user_id=current_user.id)
                             db.session.add(_file)
                             db.session.commit()
+                            os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
                 else:
                     unique_filename = str(uuid4())+'.'+files[0].filename.rsplit('.', 1)[1]
                     result = s3.upload_file(files[0], unique_filename)

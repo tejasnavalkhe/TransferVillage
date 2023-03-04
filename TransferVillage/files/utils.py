@@ -2,6 +2,7 @@ from botocore.exceptions import ClientError
 import boto3
 from TransferVillage.config import Config
 from docx2pdf import convert
+from pdf2docx import Converter
 
 class BOTO_S3:
     def upload_file(self, original_fileobj, filename, folder_name=None):
@@ -98,4 +99,10 @@ class FileHandler:
         convert(word_file)
 
     def PDF_TO_WORD(self, pdf_file):
-        return
+        # try:
+        cv = Converter(pdf_file)
+        cv.convert(pdf_file.rsplit('.', 1)[0]+'.docx')
+        return True
+        # except Exception as e:
+        #     print(e)
+        #     return False

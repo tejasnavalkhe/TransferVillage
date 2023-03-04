@@ -24,7 +24,7 @@ class Config:
     MAIL_USERNAME = os.getenv('TransferVillage_Email')
     MAIL_PASSWORD = os.getenv('TransferVillage_Email_Password')
 
-    # AWS Credentails
+    # AWS Credentials
     AWS_SERVICE_NAME = os.getenv('AWS_SERVICE_NAME')
     AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
     AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
