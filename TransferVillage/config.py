@@ -10,7 +10,7 @@ class Config:
         # Testing database
         SQLALCHEMY_DATABASE_URI = 'sqlite:///TransferVillage.db'
     else:
-        # Production database
+        # Production database - On Github public repository every sensitive information is DUMMY. Kindly change this information to correct before publishing the app.
         DATABASE_PASSWORD = '###**Major**###'
         DATABASE_USER = 'major'
         DATABASE_IP = 'localhost'
