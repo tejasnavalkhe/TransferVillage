@@ -63,8 +63,13 @@ def upload():
                     continue
                 if convert != '0':
                     file.save(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
-                    if convert == 'WORD' and file.filename.endswith('.pdf'):
-                        file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                    if convert == 'WORD' and (not file.filename.endswith('.docx')):
+                        if file.filename.endswith('.pdf'):
+                            file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                        elif file.filename.endswith('.txt'):
+                            with open(f'TransferVillage/uploads/{current_user.id}/{file.filename}', "r") as file_obj:
+                                doc = file_handler.TXT_TO_WORD(file_obj)
+                                doc.save(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.docx')
                         os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                         with open(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.docx', 'rb') as new_file:
                             result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.docx', folder_name)
@@ -74,8 +79,18 @@ def upload():
                                 db.session.add(_file)
                                 db.session.commit()
                                 os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.docx')
-                    elif convert == 'PDF' and file.filename.endswith('.docx'):
-                        file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                    elif convert == 'PDF' and (not file.filename.endswith('.pdf')):
+                        if file.filename.endswith('.docx'):
+                            file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                        elif file.filename.endswith('.txt'):
+                            with open(f'TransferVillage/uploads/{current_user.id}/{file.filename}', "r") as file_obj:
+                                pdf = file_handler.TXT_TO_PDF(file_obj)
+                                pdf.output(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
+                        elif (file.filename.endswith('.png') or file.filename.endswith('.jpeg') or file.filename.endswith('.jpg')):
+                            file_handler.IMAGE_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}', f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
+                        elif file.filename.endswith('.xlsx'):
+                            pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                            pdf.output(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
                         os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                         with open(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf', 'rb') as new_file:
                             result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.pdf', folder_name)
@@ -113,8 +128,13 @@ def upload():
                 return redirect(url_for('main.dashboard'))
             if convert != '0':
                 files[0].save(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
-                if convert == 'WORD' and files[0].filename.endswith('.pdf'):
-                    file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                if convert == 'WORD' and (not files[0].filename.endswith('.docx')):
+                    if files[0].filename.endswith('.pdf'):
+                        file_handler.PDF_TO_WORD(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                    elif files[0].filename.endswith('.txt'):
+                        with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}', "r") as file_obj:
+                            doc = file_handler.TXT_TO_WORD(file_obj)
+                            doc.save(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.docx')
                     os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                     with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.docx', 'rb') as new_file:
                         result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.docx')
@@ -124,8 +144,18 @@ def upload():
                             db.session.add(_file)
                             db.session.commit()
                             os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.docx')
-                elif convert == 'PDF' and files[0].filename.endswith('.docx'):
-                    file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                elif convert == 'PDF' and (not files[0].filename.endswith('.pdf')):
+                    if files[0].filename.endswith('.docx'):
+                        file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                    elif files[0].filename.endswith('.txt'):
+                        with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}', "r") as file_obj:
+                            pdf = file_handler.TXT_TO_PDF(file_obj)
+                            pdf.output(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
+                    elif (files[0].filename.endswith('.png') or files[0].filename.endswith('.jpeg') or files[0].filename.endswith('.jpg')):
+                        file_handler.IMAGE_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}', f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
+                    elif files[0].filename.endswith('.xlsx'):
+                        pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                        pdf.output(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
                     os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                     with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf', 'rb') as new_file:
                         result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.pdf')

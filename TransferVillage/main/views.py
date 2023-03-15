@@ -191,7 +191,11 @@ def delete_file(file_id):
             if len(files) == 0:
                 s3.delete_folder(folder_name)
         flash("Your file has been deleted successfully.", "success")
-        return redirect(url_for('main.dashboard'))
+        user_files = File.query.filter_by(user_id=current_user.id).all()
+        if len(user_files) >= 1:
+            return redirect(url_for('main.dashboard'))
+        else:
+            return redirect(url_for('files.upload'))
     else:
         flash("File does not exist.", "danger")
         return redirect(url_for('main.dashboard'))
