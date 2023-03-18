@@ -84,13 +84,15 @@ def upload():
                             file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                         elif file.filename.endswith('.txt'):
                             with open(f'TransferVillage/uploads/{current_user.id}/{file.filename}', "r") as file_obj:
-                                pdf = file_handler.TXT_TO_PDF(file_obj)
+                                alignment = request.form.get('alignment', 'J')
+                                fontsize = request.form.get('fontsize', 15)
+                                pdf = file_handler.TXT_TO_PDF(file_obj, alignment, int(fontsize))
                                 pdf.output(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
                         elif (file.filename.endswith('.png') or file.filename.endswith('.jpeg') or file.filename.endswith('.jpg')):
                             file_handler.IMAGE_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}', f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
-                        elif file.filename.endswith('.xlsx'):
-                            pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
-                            pdf.output(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
+                        # elif file.filename.endswith('.xlsx'):
+                        #     pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
+                        #     pdf.output(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf')
                         os.remove(f'TransferVillage/uploads/{current_user.id}/{file.filename}')
                         with open(f'TransferVillage/uploads/{current_user.id}/{file.filename.rsplit(".", 1)[0]}.pdf', 'rb') as new_file:
                             result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.pdf', folder_name)
@@ -149,13 +151,15 @@ def upload():
                         file_handler.WORD_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                     elif files[0].filename.endswith('.txt'):
                         with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}', "r") as file_obj:
-                            pdf = file_handler.TXT_TO_PDF(file_obj)
+                            alignment = request.form.get('alignment', 'J')
+                            fontsize = request.form.get('fontsize', 15)
+                            pdf = file_handler.TXT_TO_PDF(file_obj, alignment, int(fontsize))
                             pdf.output(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
                     elif (files[0].filename.endswith('.png') or files[0].filename.endswith('.jpeg') or files[0].filename.endswith('.jpg')):
                         file_handler.IMAGE_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}', f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
-                    elif files[0].filename.endswith('.xlsx'):
-                        pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
-                        pdf.output(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
+                    # elif files[0].filename.endswith('.xlsx'):
+                    #     pdf = file_handler.EXCEL_TO_PDF(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
+                    #     pdf.output(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf')
                     os.remove(f'TransferVillage/uploads/{current_user.id}/{files[0].filename}')
                     with open(f'TransferVillage/uploads/{current_user.id}/{files[0].filename.rsplit(".", 1)[0]}.pdf', 'rb') as new_file:
                         result = s3.upload_file(new_file, unique_filename.rsplit('.', 1)[0]+'.pdf')

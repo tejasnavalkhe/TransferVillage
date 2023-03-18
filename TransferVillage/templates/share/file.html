@@ -47,7 +47,7 @@ Upload File
                                             <label for="formFileMultiple" class="form-label">Select Files</label>
                                             <input name="files" type="file" placeholder="Confirm Password"
                                                 style="border-color: var(--tg-theme-primary);" id="formFileMultiple"
-                                                multiple required>
+                                                multiple required onchange="fnGetExtension()">
                                         </div>
                                     </div>
 
@@ -59,6 +59,35 @@ Upload File
                                                 <option value="0" selected>Don't Convert</option>
                                                 <option value="PDF">PDF</option>
                                                 <option value="WORD">WORD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="alignment_grp" style="display: none;">
+                                        <div class="input-grp">
+                                            <label for="alignment" class="form-label">Set Font Name for Text
+                                                file</label>
+                                            <select class="form-select form-select-lg mb-3" id="alignment_select"
+                                                style="border-color: white;" name="alignment">
+                                                <option value="J" selected>Justify</option>
+                                                <option value="C">Center</option>
+                                                <option value="L">Left</option>
+                                                <option value="R">Right</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" id="fontsize_grp" style="display: none;">
+                                        <div class="input-grp">
+                                            <label for="fontsize" class="form-label">Set Font Size for Text
+                                                file</label>
+                                            <select class="form-select form-select-lg mb-3" id="fontsize_select"
+                                                style="border-color: white;" name="fontsize">
+                                                <option value="10">10</option>
+                                                <option value="12">12</option>
+                                                <option value="14">14</option>
+                                                <option value="15" selected>15</option>
+                                                <option value="20">20</option>
                                             </select>
                                         </div>
                                     </div>
@@ -112,6 +141,7 @@ Upload File
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
+        fnGetExtension();
         $('#is_private').click(function () {
             if ($(this).prop("checked") == true) {
                 document.getElementById("password_grp").style.display = 'block';
@@ -129,6 +159,33 @@ Upload File
             }
         });
     });
+</script>
+
+<script>
+    function fnGetExtension() {
+        //Get the file input element by its id 
+        var fileInput = document.getElementById('formFileMultiple');
+        //Get the file name
+        var fileNames = fileInput.files;
+        var file_name_list = [];
+        for (let index = 0; index < fileNames.length; index++) {
+            const file = fileNames[index];
+            name = file.name.split('.').pop();
+            if (name === 'txt') {
+                file_name_list.push(name);
+            }
+        }
+        if (file_name_list.length >= 1) {
+            document.getElementById("alignment_grp").style.display = 'block';
+            document.getElementById("fontsize_grp").style.display = 'block';
+        } else {
+            document.getElementById("alignment_grp").style.display = 'none';
+            document.getElementById("fontsize_grp").style.display = 'none';
+        }
+        //Get the file Extension 
+        var fileExtension = fileName.split('.').pop();
+        alert(fileExtension);
+    }
 </script>
 
 {% endblock content %}

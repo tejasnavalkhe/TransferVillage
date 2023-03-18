@@ -103,7 +103,7 @@ class FileHandler:
 	def WORD_TO_PDF(self, word_file):
 		convert(word_file)
 	
-	def TXT_TO_PDF(self, txt_obj):
+	def TXT_TO_PDF(self, txt_obj, alignment="J", fontsize=15):
 		# save FPDF() class into a variable pdf
 		pdf = FPDF()
 
@@ -111,11 +111,11 @@ class FileHandler:
 		pdf.add_page()
 
 		# set style and size of font that you want in the pdf
-		pdf.set_font("Arial", size = 15)
+		pdf.set_font("Arial", size = fontsize)
 
 		# insert the texts in pdf
 		for x in txt_obj:
-			pdf.cell(200, 10, txt = x, ln = 1, align = 'J')
+			pdf.cell(200, 10, txt = x, ln = 1, align = alignment)
 		return pdf
 	
 	def IMAGE_TO_PDF(self, image_file, pdf_file):

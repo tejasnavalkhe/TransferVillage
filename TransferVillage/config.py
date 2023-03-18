@@ -11,21 +11,18 @@ class Config:
         SQLALCHEMY_DATABASE_URI = 'sqlite:///TransferVillage.db'
     else:
         # Production database - On Github public repository every sensitive information is DUMMY. Kindly change this information to correct before publishing the app.
-        DATABASE_PASSWORD = '###**Major**###'
-        DATABASE_USER = 'major'
+        DATABASE_PASSWORD = '#tranfervillageMajorCollege'
+        DATABASE_USER = 'tranfervillage'
         DATABASE_IP = 'localhost'
         DATABASE_NAME = 'TransferVillage'
         SQLALCHEMY_DATABASE_URI = f'mysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_IP}/{DATABASE_NAME}'
 
     # Mail Settings
-    # MAIL_SERVER = 'smtp.zoho.in'
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    # MAIL_USERNAME = os.getenv('TransferVillage_Email')
-    # MAIL_PASSWORD = os.getenv('TransferVillage_Email_Password')
     MAIL_USERNAME = '51110102966@piemr.edu.in'
-    MAIL_PASSWORD = 'yblswnnglfsfvlwq'
+    MAIL_PASSWORD = 'khalwvxrrwtsasry'
 
     # AWS Credentials
     AWS_SERVICE_NAME = os.getenv('AWS_SERVICE_NAME')
@@ -35,4 +32,4 @@ class Config:
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
     # File related settings
-    ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'docx', 'jpeg', 'jpg', 'xlsx'}
+    ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'docx', 'jpeg', 'jpg'}
